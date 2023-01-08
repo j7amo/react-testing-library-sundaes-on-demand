@@ -1,11 +1,16 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+
 import userEvent from '@testing-library/user-event';
 import Options from '../Options';
+import { render, screen } from '../../../test-utils/testing-library-utils';
 
 test('scoops subTotal starts with 0 and updates when scoops number changes', async () => {
   const user = userEvent.setup();
+  // After we added context our components now depend on it,
+  // so we need to update tests accordingly.
+  // Instead of rendering just <Options /> we now need to wrap it with Context Provider:
   render(<Options optionType="scoops" />);
+  // OR we can create a custom "render" method to reduce the boilerplate:
 
   // Here we query by a partial match because the "total" value will change
   // during the test(we will change the number of scoops) and we want to reuse this element
