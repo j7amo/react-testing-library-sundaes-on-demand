@@ -5,10 +5,13 @@ import { Row } from 'react-bootstrap';
 import ScoopOption from './ScoopOption';
 import ToppingOption from './ToppingOption';
 import AlertBanner from '../common/AlertBanner';
+import { PRICES, useOrderDetails } from '../../contexts/OrderDetails';
+import formatCurrency from '../../utils';
 
 function Options({ optionType }) {
   const [items, setItems] = useState([]);
   const [error, setError] = useState('');
+  const { optionsCounts, totals } = useOrderDetails();
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -40,7 +43,20 @@ function Options({ optionType }) {
     <ItemComponent key={name} name={name} imagePath={imagePath} />
   ));
 
-  return <Row>{optionItems}</Row>;
+  const optionTitle = optionType[0].toUpperCase().concat(optionType.slice(1));
+
+  return (
+    <>
+      <h2>{optionTitle}</h2>
+      <p>
+        {formatCurrency(PRICES[optionType])}
+        {' '}
+        each
+      </p>
+      <p>{`${optionTitle} total: ${formatCurrency(totals[optionType])}`}</p>
+      <Row>{optionItems}</Row>
+    </>
+  );
 }
 
 Options.propTypes = {
