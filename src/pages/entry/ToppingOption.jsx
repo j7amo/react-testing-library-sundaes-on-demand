@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import * as PropTypes from 'prop-types';
 import {
-  Col, FormControl, FormGroup, FormLabel, Row,
+  Col, FormCheck, FormGroup, Row,
 } from 'react-bootstrap';
 import { useOrderDetails } from '../../contexts/OrderDetails';
 
@@ -10,7 +10,7 @@ function ToppingOption({ name, imagePath }) {
 
   const inputChangeHandler = useCallback(
     (evt) => {
-      updateItemCount(name, evt.target.disabled ? 0 : 1, 'toppings');
+      updateItemCount(name, evt.target.checked ? 1 : 0, 'toppings');
     },
     [name, updateItemCount],
   );
@@ -27,16 +27,7 @@ function ToppingOption({ name, imagePath }) {
         as={Row}
         style={{ marginTop: '10px' }}
       >
-        <FormLabel column xs="6" style={{ textAlign: 'right' }}>
-          {name}
-        </FormLabel>
-        <Col xs={5}>
-          <FormControl
-            type="checkbox"
-            defaultChecked={false}
-            onChange={inputChangeHandler}
-          />
-        </Col>
+        <FormCheck type="checkbox" onChange={inputChangeHandler} label={name} />
       </FormGroup>
     </Col>
   );

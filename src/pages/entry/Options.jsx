@@ -11,7 +11,7 @@ import formatCurrency from '../../utils';
 function Options({ optionType }) {
   const [items, setItems] = useState([]);
   const [error, setError] = useState('');
-  const { optionsCounts, totals } = useOrderDetails();
+  const { totals } = useOrderDetails();
 
   useEffect(() => {
     const fetchItems = async () => {
