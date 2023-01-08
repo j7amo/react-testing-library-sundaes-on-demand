@@ -1,8 +1,8 @@
 // STEP-2:
 // import "rest" (we're mocking REST and not GraphQL which is also possible with this package)
-import { rest } from 'msw'; // after installing Mock Server Worker package (msw)
+import { rest } from 'msw'; // after installing Mock Service Worker package (msw)
 
-// after installing Mock Server Worker package (msw)
+// after installing Mock Service Worker package (msw)
 // we need to take several steps in order to set up testing environment:
 // STEP-1:
 // create "mocks" directory and "handlers.js" file inside this directory.
@@ -22,6 +22,22 @@ const handlers = [
       {
         name: 'Vanilla',
         imagePath: '/images/vanilla.png',
+      },
+    ]),
+  )),
+  rest.get('http://localhost:3030/toppings', (req, res, ctx) => res(
+    ctx.json([
+      {
+        name: 'M&Ms',
+        imagePath: '/images/m-and-ms.png',
+      },
+      {
+        name: 'Hot fudge',
+        imagePath: '/images/hot-fudge.png',
+      },
+      {
+        name: 'Peanut butter cups',
+        imagePath: '/images/peanut-butter-cups.png',
       },
     ]),
   )),
