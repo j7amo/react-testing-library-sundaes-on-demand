@@ -1,11 +1,11 @@
 import React from 'react';
 import OrderSummary from './pages/summary/OrderSummary';
-import Options from './pages/entry/Options';
+import OrderEntry from './pages/entry/OrderEntry';
 
 function App() {
   return (
     <>
-      <Options optionType="scoops" />
+      <OrderEntry />
       <OrderSummary />
     </>
   );
