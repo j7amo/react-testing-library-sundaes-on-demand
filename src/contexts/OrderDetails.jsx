@@ -6,17 +6,15 @@ import React, {
   useState,
 } from 'react';
 import * as PropTypes from 'prop-types';
-
-export const PRICES = {
-  scoops: 2,
-  toppings: 1.5,
-};
+import { PRICES } from '../const/const';
 
 const OrderDetails = createContext({
   optionsCounts: {},
   totals: {},
+  orderNumber: '',
   updateItemCount: () => {},
   resetOrderCounts: () => {},
+  updateOrderNumber: () => {},
 });
 
 const initialState = {
@@ -34,6 +32,7 @@ const initialState = {
     Mochi: 0,
     Cherries: 0,
   },
+  orderNumber: '',
 };
 
 export function OrderDetailsProvider({ children }) {
@@ -66,6 +65,13 @@ export function OrderDetailsProvider({ children }) {
     [],
   );
 
+  const updateOrderNumber = useCallback((number) => {
+    setOptionsCounts((prevState) => ({
+      ...prevState,
+      orderNumber: number,
+    }));
+  }, []);
+
   const calculateTotal = useCallback(
     (type) => PRICES[type]
       * Object.values(optionsCounts[type]).reduce(
@@ -87,10 +93,18 @@ export function OrderDetailsProvider({ children }) {
     () => ({
       optionsCounts,
       totals,
+      orderNumber: optionsCounts.orderNumber,
       updateItemCount,
       resetOrderCounts,
+      updateOrderNumber,
     }),
-    [optionsCounts, resetOrderCounts, totals, updateItemCount],
+    [
+      optionsCounts,
+      resetOrderCounts,
+      updateOrderNumber,
+      totals,
+      updateItemCount,
+    ],
   );
 
   return (

@@ -5,8 +5,9 @@ import { Row } from 'react-bootstrap';
 import ScoopOption from './ScoopOption';
 import ToppingOption from './ToppingOption';
 import AlertBanner from '../common/AlertBanner';
-import { PRICES, useOrderDetails } from '../../contexts/OrderDetails';
+import { useOrderDetails } from '../../contexts/OrderDetails';
 import formatCurrency from '../../utils';
+import { PRICES } from '../../const/const';
 
 function Options({ optionType }) {
   const [items, setItems] = useState([]);
