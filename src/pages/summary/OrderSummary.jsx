@@ -1,9 +1,10 @@
 import React from 'react';
+import * as PropTypes from 'prop-types';
 import SummaryForm from './SummaryForm';
 import { useOrderDetails } from '../../contexts/OrderDetails';
 import formatCurrency from '../../utils';
 
-function OrderSummary() {
+function OrderSummary({ setOrderPhase }) {
   const { totals, optionsCounts } = useOrderDetails();
 
   const orderedScoops = Object.entries(optionsCounts.scoops).filter(
@@ -35,9 +36,16 @@ function OrderSummary() {
         {formatCurrency(totals.toppings)}
       </h2>
       <ul>{toppings}</ul>
-      <SummaryForm />
+      <h2>
+        {`Grand total: ${formatCurrency(totals.scoops + totals.toppings)}`}
+      </h2>
+      <SummaryForm onSubmit={setOrderPhase} />
     </>
   );
 }
+
+OrderSummary.propTypes = {
+  setOrderPhase: PropTypes.func.isRequired,
+};
 
 export default OrderSummary;
