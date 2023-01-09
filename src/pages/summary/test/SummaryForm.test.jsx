@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import SummaryForm from '../SummaryForm';
 
 test('checkbox is unchecked by default', () => {
-  render(<SummaryForm />);
+  render(<SummaryForm onSubmit={jest.fn()} />);
   const checkbox = screen.getByRole('checkbox', {
     name: /terms and conditions/i,
   });
@@ -19,7 +19,7 @@ test('button is enabled after checkbox is checked and disabled after it is unche
   // To use "userEvent" API we need to:
   // 1) set it up:
   const user = userEvent.setup();
-  render(<SummaryForm />);
+  render(<SummaryForm onSubmit={jest.fn()} />);
 
   const checkbox = screen.getByRole('checkbox', {
     name: /terms and conditions/i,
@@ -36,7 +36,7 @@ test('button is enabled after checkbox is checked and disabled after it is unche
 
 test('popover reacts to hovering over "Terms and conditions"', async () => {
   const user = userEvent.setup();
-  render(<SummaryForm />);
+  render(<SummaryForm onSubmit={jest.fn()} />);
 
   const termsAndConditions = screen.getByText(/terms and conditions/i);
   // if we try the straightforward approach with "getByText" to try and find an element

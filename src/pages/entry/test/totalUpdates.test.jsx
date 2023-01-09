@@ -105,7 +105,7 @@ describe('grand total', () => {
 
   test('starts with $0.00 and updates correctly if scoop is added first', async () => {
     const user = userEvent.setup();
-    render(<OrderEntry />);
+    render(<OrderEntry setOrderPhase={jest.fn()} />);
 
     const grandTotal = screen.getByText('Grand total: $', { exact: false });
     expect(grandTotal).toHaveTextContent('0.00');
@@ -122,7 +122,7 @@ describe('grand total', () => {
 
   test('updates correctly if topping is added first', async () => {
     const user = userEvent.setup();
-    render(<OrderEntry />);
+    render(<OrderEntry setOrderPhase={jest.fn()} />);
 
     const grandTotal = screen.getByText('Grand total: $', { exact: false });
 
@@ -136,7 +136,7 @@ describe('grand total', () => {
 
   test('resets to $0.00 if all items are removed', async () => {
     const user = userEvent.setup();
-    render(<OrderEntry />);
+    render(<OrderEntry setOrderPhase={jest.fn()} />);
 
     const grandTotal = screen.getByText('Grand total: $', { exact: false });
 

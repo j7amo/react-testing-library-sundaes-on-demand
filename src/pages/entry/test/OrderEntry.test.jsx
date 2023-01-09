@@ -1,10 +1,6 @@
 import React from 'react';
 import { rest } from 'msw';
-import {
-  render,
-  screen,
-  waitFor,
-} from '../../../test-utils/testing-library-utils';
+import { render, screen, waitFor } from '../../../test-utils/testing-library-utils';
 import OrderEntry from '../OrderEntry';
 import server from '../../../mocks/server';
 
@@ -28,7 +24,7 @@ describe('OrderEntry component', () => {
       rest.get('http://localhost:3030/toppings', (req, res, ctx) => res(ctx.status(500))),
     );
 
-    render(<OrderEntry />);
+    render(<OrderEntry setOrderPhase={jest.fn()} />);
 
     // here we have another challenge:
     // When we render <OrderEntry /> there are 2 network requests (one from <Options /> for scoops,
