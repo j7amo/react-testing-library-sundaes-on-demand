@@ -72,7 +72,7 @@ function SummaryForm({ onSubmit }) {
   return isSubmitting ? (
     <p>Submitting</p>
   ) : (
-    <Form onSubmit={formSubmitHandler}>
+    <Form onSubmit={formSubmitHandler} style={{ marginTop: '50px' }}>
       <FormGroup controlId="terms-and-conditions">
         <FormCheck
           type="checkbox"

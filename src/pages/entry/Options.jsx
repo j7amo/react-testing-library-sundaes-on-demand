@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import * as PropTypes from 'prop-types';
 import axios from 'axios';
-import { Row } from 'react-bootstrap';
+import { Container, Row } from 'react-bootstrap';
 import ScoopOption from './ScoopOption';
 import ToppingOption from './ToppingOption';
 import AlertBanner from '../common/AlertBanner';
@@ -47,7 +47,7 @@ function Options({ optionType }) {
   const optionTitle = optionType[0].toUpperCase().concat(optionType.slice(1));
 
   return (
-    <>
+    <Container style={{ padding: '20px' }}>
       <h2>{optionTitle}</h2>
       <p>
         {formatCurrency(PRICES[optionType])}
@@ -56,7 +56,7 @@ function Options({ optionType }) {
       </p>
       <p>{`${optionTitle} total: ${formatCurrency(totals[optionType])}`}</p>
       <Row>{optionItems}</Row>
-    </>
+    </Container>
   );
 }
 

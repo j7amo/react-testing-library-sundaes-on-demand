@@ -1,6 +1,6 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import Options from './Options';
 import { useOrderDetails } from '../../contexts/OrderDetails';
 import formatCurrency from '../../utils';
@@ -14,7 +14,7 @@ function OrderEntry({ setOrderPhase }) {
   };
 
   return (
-    <>
+    <Container style={{ textAlign: 'left' }}>
       <h1>Design your Sundae!</h1>
       <Options optionType="scoops" />
       <Options optionType="toppings" />
@@ -24,7 +24,7 @@ function OrderEntry({ setOrderPhase }) {
       <Button variant="primary" type="button" onClick={orderButtonClickHandler}>
         Order
       </Button>
-    </>
+    </Container>
   );
 }
 

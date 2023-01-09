@@ -13,7 +13,7 @@ export default function OrderConfirmation({ setOrderPhase }) {
   };
 
   return (
-    <Container style={{ textAlign: 'center' }}>
+    <Container style={{ textAlign: 'center', padding: '50px' }}>
       <h2>Thank you!</h2>
       <p>{`Your order number is ${orderNumber}`}</p>
       <Button variant="primary" type="button" onClick={buttonClickHandler}>
