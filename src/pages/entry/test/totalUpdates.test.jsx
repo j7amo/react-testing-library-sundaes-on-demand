@@ -8,7 +8,7 @@ import OrderEntry from '../OrderEntry';
 test('scoops subTotal starts with 0 and updates when scoops number changes', async () => {
   const user = userEvent.setup();
   // After we added context our components now depend on it,
-  // so we need to update tests accordingly.
+  // so we need to update test accordingly.
   // Instead of rendering just <Options /> we now need to wrap it with Context Provider:
   render(<Options optionType="scoops" />);
   // OR we can create a custom "render" method to reduce the boilerplate:
@@ -72,18 +72,43 @@ test('toppings subTotal starts with 0 and updates when scoops number changes', a
 });
 
 describe('grand total', () => {
-  test('starts with $0.00', async () => {
-    render(<OrderEntry />);
+  // This particular test causes an error about not wrapping code
+  // that changes the state of React component into "act" method...
+  // But in reality this error is MISLEADING! We don't run any code
+  // inside the test to update component state. It turns out
+  // that the problem is caused by AUTO-CLEANUP made by RTL at the
+  // end of each test AND updating the component state because of
+  // request to the server in useEffect:
+  // 1) We run the test
+  // 2) Component mounts
+  // 3) Request inside useEffect is being sent
+  // 4) We query the text
+  // 5) We find the text
+  // 6) We make an assertion
+  // 7) Test finishes
+  // 8) RTL does its AUTO-CLEANUP (basically unmounting the component)
+  // 9) The request is resolved and React tries to update the state
+  // of UNMOUNTED component which leads to an ERROR.
+  // There are different ways of solving this:
+  // 1) Turn OFF RTL auto-cleanup. But it is global and hence NOT RECOMMENDED.
+  // 2) Mock useEffect to avoid network request. This will make our test to
+  // be much less representative and hence NOT RECOMMENDED.
+  // 3) Wrap in "act" (but we have nothing to wrap).
+  // 4) Add "awaits" for requests to the end of the test.
+  // 5) Move this test to the one that awaits request initiated inside useEffect.
+  // test('starts with $0.00', async () => {
+  //   render(<OrderEntry />);
+  //
+  //   const grandTotal = screen.getByText('Grand total: $', { exact: false });
+  //   expect(grandTotal).toHaveTextContent('0.00');
+  // });
 
-    const grandTotal = screen.getByText('Grand total: $', { exact: false });
-    expect(grandTotal).toHaveTextContent('0.00');
-  });
-
-  test('updates correctly if scoop is added first', async () => {
+  test('starts with $0.00 and updates correctly if scoop is added first', async () => {
     const user = userEvent.setup();
     render(<OrderEntry />);
 
     const grandTotal = screen.getByText('Grand total: $', { exact: false });
+    expect(grandTotal).toHaveTextContent('0.00');
 
     const vanillaInput = await screen.findByRole('spinbutton', {
       name: 'Vanilla',

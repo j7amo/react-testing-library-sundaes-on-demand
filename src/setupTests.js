@@ -9,14 +9,14 @@ import '@testing-library/jest-dom';
 import server from './mocks/server';
 
 // STEP-8:
-// Establish API mocking(intercepting real requests) before all tests.
+// Establish API mocking(intercepting real requests) before all test.
 beforeAll(() => server.listen());
 
 // STEP-9:
-// Reset any request handlers that we may add during the tests,
-// so they don't affect other tests.
+// Reset any request handlers that we may add during the test,
+// so they don't affect other test.
 afterEach(() => server.resetHandlers());
 
 // STEP-10:
-// Clean up after the tests are finished.
+// Clean up after the test are finished.
 afterAll(() => server.close());
