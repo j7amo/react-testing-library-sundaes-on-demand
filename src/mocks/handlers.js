@@ -41,6 +41,7 @@ const handlers = [
       },
     ]),
   )),
+  rest.post('http://localhost:3030/order', (req, res, ctx) => res(ctx.json({ orderNumber: 123456789 }))),
 ];
 
 export default handlers;
