@@ -32,11 +32,15 @@ function OrderSummary({ setOrderPhase }) {
         {formatCurrency(totals.scoops)}
       </h2>
       <ul>{scoops}</ul>
-      <h2>
-        Toppings:
-        {formatCurrency(totals.toppings)}
-      </h2>
-      <ul>{toppings}</ul>
+      {!!totals.toppings && (
+        <>
+          <h2>
+            Toppings:
+            {formatCurrency(totals.toppings)}
+          </h2>
+          <ul>{toppings}</ul>
+        </>
+      )}
       <h2>
         {`Grand total: ${formatCurrency(totals.scoops + totals.toppings)}`}
       </h2>
