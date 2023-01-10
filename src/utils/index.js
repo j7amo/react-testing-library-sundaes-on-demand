@@ -23,4 +23,10 @@ function formatCurrency(amount) {
   }).format(amount);
 }
 
+export function isAmountValid(inputValue) {
+  return (
+    inputValue >= 0 && inputValue <= 10 && Math.floor(inputValue) === inputValue
+  );
+}
+
 export default formatCurrency;

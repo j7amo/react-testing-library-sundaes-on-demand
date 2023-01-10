@@ -9,9 +9,7 @@ import { ORDER_PHASES } from '../../const/const';
 function OrderEntry({ setOrderPhase }) {
   const { optionsCounts, totals } = useOrderDetails();
   const counts = Object.values(optionsCounts.scoops);
-  const noNegativeCounts = counts.every((count) => count >= 0);
-  const atLeastOneScoopOrdered = counts.some((count) => count > 0);
-  const isOrderButtonEnabled = noNegativeCounts && atLeastOneScoopOrdered;
+  const isOrderButtonEnabled = counts.some((count) => count > 0);
 
   const orderButtonClickHandler = () => {
     setOrderPhase(ORDER_PHASES.REVIEW);

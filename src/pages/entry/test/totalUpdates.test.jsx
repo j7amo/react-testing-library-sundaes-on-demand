@@ -71,6 +71,26 @@ test('toppings subTotal starts with 0 and updates when scoops number changes', a
   expect(toppingsTotal).toHaveTextContent('1.50');
 });
 
+test('scoops subtotal does not change when ScoopOption input value is invalid', async () => {
+  const user = userEvent.setup();
+  render(<Options optionType="scoops" />);
+
+  const vanillaScoopInput = await screen.findByRole('spinbutton', {
+    name: /vanilla/i,
+  });
+  const scoopsSubTotal = screen.getByText('Scoops total: $0.00');
+
+  await user.clear(vanillaScoopInput);
+  await user.type(vanillaScoopInput, '-1');
+
+  expect(scoopsSubTotal).toHaveTextContent('$0.00');
+
+  await user.clear(vanillaScoopInput);
+  await user.type(vanillaScoopInput, '11');
+
+  expect(scoopsSubTotal).toHaveTextContent('$0.00');
+});
+
 describe('grand total', () => {
   // This particular test causes an error about not wrapping code
   // that changes the state of React component into "act" method...
