@@ -7,7 +7,11 @@ import formatCurrency from '../../utils';
 import { ORDER_PHASES } from '../../const/const';
 
 function OrderEntry({ setOrderPhase }) {
-  const { totals } = useOrderDetails();
+  const { optionsCounts, totals } = useOrderDetails();
+  const counts = Object.values(optionsCounts.scoops);
+  const noNegativeCounts = counts.every((count) => count >= 0);
+  const atLeastOneScoopOrdered = counts.some((count) => count > 0);
+  const isOrderButtonEnabled = noNegativeCounts && atLeastOneScoopOrdered;
 
   const orderButtonClickHandler = () => {
     setOrderPhase(ORDER_PHASES.REVIEW);
@@ -21,7 +25,12 @@ function OrderEntry({ setOrderPhase }) {
       <h2>
         {`Grand total: ${formatCurrency(totals.scoops + totals.toppings)}`}
       </h2>
-      <Button variant="primary" type="button" onClick={orderButtonClickHandler}>
+      <Button
+        variant="primary"
+        type="button"
+        onClick={orderButtonClickHandler}
+        disabled={!isOrderButtonEnabled}
+      >
         Order
       </Button>
     </Container>

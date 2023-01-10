@@ -1,6 +1,11 @@
 import React from 'react';
 import { rest } from 'msw';
-import { render, screen, waitFor } from '../../../test-utils/testing-library-utils';
+import userEvent from '@testing-library/user-event';
+import {
+  render,
+  screen,
+  waitFor,
+} from '../../../test-utils/testing-library-utils';
 import OrderEntry from '../OrderEntry';
 import server from '../../../mocks/server';
 
@@ -45,5 +50,27 @@ describe('OrderEntry component', () => {
 
       expect(alertElements).toHaveLength(2);
     });
+  });
+
+  test('should render "Order" button disabled when no scoops ordered and enabled when scoops amount is > 0', async () => {
+    const user = userEvent.setup();
+    render(<OrderEntry setOrderPhase={jest.fn()} />);
+
+    const vanillaScoopInput = await screen.findByRole('spinbutton', {
+      name: /vanilla/i,
+    });
+    const orderButton = screen.getByRole('button', { name: /order/i });
+
+    expect(orderButton).toBeDisabled();
+
+    await user.clear(vanillaScoopInput);
+    await user.type(vanillaScoopInput, '1');
+
+    expect(orderButton).toBeEnabled();
+
+    await user.clear(vanillaScoopInput);
+    await user.type(vanillaScoopInput, '0');
+
+    expect(orderButton).toBeDisabled();
   });
 });
