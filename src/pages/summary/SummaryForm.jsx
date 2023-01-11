@@ -1,5 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback, useEffect, useRef, useState,
+} from 'react';
 import * as PropTypes from 'prop-types';
 import {
   Button, Form, FormCheck, FormGroup,
@@ -9,10 +11,12 @@ import Popover from 'react-bootstrap/Popover';
 import axios from 'axios';
 import { ORDER_PHASES } from '../../const/const';
 import { useOrderDetails } from '../../contexts/OrderDetails';
+import AlertBanner from '../common/AlertBanner';
 
 function SummaryForm({ onSubmit }) {
   const [isTcChecked, setIsTcChecked] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
   const popoverTarget = useRef(null);
   const { resetOrderCounts, updateOrderNumber } = useOrderDetails();
 
@@ -24,6 +28,10 @@ function SummaryForm({ onSubmit }) {
     evt.preventDefault();
     setIsSubmitting(true);
   };
+
+  const tryAgainHandler = useCallback(() => {
+    setError(null);
+  }, []);
 
   useEffect(() => {
     const submitOrder = async () => {
@@ -37,7 +45,7 @@ function SummaryForm({ onSubmit }) {
         updateOrderNumber(response.data.orderNumber);
         onSubmit(ORDER_PHASES.COMPLETE);
       } catch (err) {
-        console.log(err);
+        setError(err.message);
       }
 
       setIsSubmitting(false);
@@ -69,9 +77,22 @@ function SummaryForm({ onSubmit }) {
     </span>
   );
 
-  return isSubmitting ? (
-    <p>Submitting</p>
-  ) : (
+  if (isSubmitting) {
+    return <p>Submitting</p>;
+  }
+
+  if (error) {
+    return (
+      <div style={{ width: '50%' }}>
+        <AlertBanner message={error} />
+        <Button type="button" onClick={tryAgainHandler}>
+          Try again
+        </Button>
+      </div>
+    );
+  }
+
+  return (
     <Form onSubmit={formSubmitHandler} style={{ marginTop: '50px' }}>
       <FormGroup controlId="terms-and-conditions">
         <FormCheck

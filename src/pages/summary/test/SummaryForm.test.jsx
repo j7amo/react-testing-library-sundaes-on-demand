@@ -1,7 +1,9 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { rest } from 'msw';
 import SummaryForm from '../SummaryForm';
+import { render, screen } from '../../../test-utils/testing-library-utils';
+import server from '../../../mocks/server';
 
 test('checkbox is unchecked by default', () => {
   render(<SummaryForm onSubmit={jest.fn()} />);
@@ -62,4 +64,21 @@ test('popover reacts to hovering over "Terms and conditions"', async () => {
   // and we already stored the reference to this object on the previous test step,
   // so we can just re-use it:
   expect(popover).not.toBeInTheDocument();
+});
+
+test('alert pops up if there is an error during order submitting', async () => {
+  const user = userEvent.setup();
+  server.resetHandlers(
+    rest.post('http://localhost:3030/order', (req, res, ctx) => res(ctx.status(500))),
+  );
+  render(<SummaryForm onSubmit={jest.fn()} />);
+
+  const checkbox = screen.getByRole('checkbox', { name: /terms and conditions/i });
+  const confirmButton = screen.getByRole('button', { name: /confirm order/i });
+
+  await user.click(checkbox);
+  await user.click(confirmButton);
+
+  const alertBanner = await screen.findByRole('alert');
+  expect(alertBanner).toBeInTheDocument();
 });
